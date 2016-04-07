@@ -351,16 +351,17 @@ def main():
 					key = decode(key)
 				if key == "":
 					key = defaultkey
+				out = ""
 				if ed == "e":
 					if chunk < 1:
 						chunk = len(msg)
 					for x in xrange(0, len(msg), chunk):
-						write("%s," %(encrypt(process(msg[x:x+chunk]), key, cryptcharset)))
+						out += "%s," %(encrypt(process(msg[x:x+chunk]), key, cryptcharset))
 				elif ed == "d":
 					msg = msg.split(",")
 					try:
 						for m in msg:
-							write("%s" %(decrypt(process(m), key, cryptcharset)))
+							out += decrypt(process(m), key, cryptcharset))
 					except ValueError, e:
 						if (str(e).endswith("' is not in list") and str(e).startswith("'")) or str(e) == "tuple.index(x): x not in tuple" or str(e) == "chr() arg not in range(256)":
 							raise ValueError("The message given is either not properly encoded or not encoded at all.")
@@ -368,6 +369,7 @@ def main():
 							raise e
 					except IndexError, e:
 						raise ValueError("The message given is either not properly encoded or not encoded at all.")
+				write(out)
 			except Exception, e:
 				err(str(e)+"\n")
 		except:
