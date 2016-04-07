@@ -433,16 +433,13 @@ def main():
 			fin = arg[5:]
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:8] == "--chunk=":
-			chunk = arg[7:]
+			chunk = arg[8:]
 			try:
 				chunk = int(chunk, 0)
-				print chunk
 			except Exception, e:
-				print e, arg[7:]
 				chunk = True
 			if chunk < 1:
 				chunk = True
-			print chunk
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:9] == "--genkey=": # Generates a random key to use while encrypting
 			err("Generating a random key...\n")
