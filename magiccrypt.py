@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- encoding: utf-8 -*-
 
 import sys, os, time
 
 try:
 	import crypto_random as random
-except Exception, e:
+except Exception as e:
 	sys.stderr.write("The custom random number generator has failed to load!\nPlease make sure you have one of the following files:\n\n-> crypto_random.py\n-> crypto_random.pyc\n\nNote that .py and .pyw files can be interchanged.\n")
 	raise SystemExit
 else:
@@ -125,13 +125,13 @@ def main():
 		for char in s:
 			ret += ord(char)
 			ret *= 256
-		ret /= 256
+		ret //= 256
 		return ret
 	def itos(i): # Converts an integer into the string it represents
 		ret = ""
 		while i > 0:
 			ret += chr(i % 256)
-			i /= 256
+			i //= 256
 		return ret[::-1]
 	global fin, kin, op, fake, quiet, gkey, kkey, hash_algo, your_key_here, defaultkey # Ensures these variables get defined at a program-wide level
 	gkey = lambda: stoi("3.14159265359") # Some arbitrary string; This needs to be the same for both encryptor and decryptor
@@ -142,7 +142,7 @@ def main():
 	cryptdepth = 1 # This does nothing, I may or may not do something with it later - feel free to delete it from the code
 	fake = False # If this is set to True, keys can be made to look like they don't decrypt the message - this ruins any ability to do a brute-force attack, assuming someone had the computing power to do one in the first place, as long as the key is sufficiently long. A 1-byte key won't fool anyone but a 243-byte key probably will.
 	quiet = False # This does nothing, I may or may not do something with it later - feel free to delete it from the code
-	all_bytes = list(chr(a) for a in xrange(256)) # A list enumerating every possible byte value; This should be kept at this original value
+	all_bytes = list(chr(a) for a in range(256)) # A list enumerating every possible byte value; This should be kept at this original value
 	cryptcharset = True # The range of values that can be encrypted; This needs to be the same for both encryptor and decryptor. True assumes all possible values.
 	hash_algo = False # Set this to True to turn this program into a hashing algorithm. Once you do this, messages can't be decrypted once you encrypt them, unless you're willing to guess every possible message, hash it, and compare it to the value of the hash you're given, assuming you already know the key.
 	outcharset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789=/+-" # The character set that can be produced as output; This needs to be the same for both encryptor and decryptor
@@ -196,17 +196,17 @@ def main():
 		del okey # Remove unneeded variable `okey`
 		ret = ""
 		if charset == True:
-			for a in xrange(len(message)):
+			for a in range(len(message)):
 				ret += chr((ord(message[a]) + ord(key[a % len(key)])) % 256)
 		else:
-			for a in xrange(len(message)):
+			for a in range(len(message)):
 				if message[a] in charset:
 					ret += charset[(charset.index(message[a]) + charset.index(key[a % len(key)])) % len(charset)]
 				else:
 					ret += message[a]
 		if hash_algo:
 			ret = process(ret, type="key")
-			if isinstance(hash_algo, (int, long)) and (not isinstance(hash_algo, bool)):
+			if isinstance(hash_algo, int) and (not isinstance(hash_algo, bool)):
 				return encode(ret, outcharset)[:hash_algo]
 		return encode(ret, outcharset)
 	def encode(message, charset=outcharset, maxReq=getmaxval): # Encodes a message (a sequence of bytes) into the specified character set and returns the result; This can be used to perform encryption, but that's not its purpose, and the encryption will be significantly less secure
@@ -224,7 +224,7 @@ def main():
 			powr += 1
 		lst = ()
 		a = [0]*powr
-		for x in xrange(len(charset)**powr):
+		for x in range(len(charset)**powr):
 			if a[-1] >= len(charset):
 				a[-1] %= len(charset)
 				a[-2] += 1
@@ -254,10 +254,10 @@ def main():
 		message = decode(message, outcharset)
 		ret = ""
 		if charset == True:
-			for a in xrange(len(message)):
+			for a in range(len(message)):
 				ret += chr((ord(message[a]) - ord(key[a % len(key)])) % 256)
 		else:
-			for a in xrange(len(message)):
+			for a in range(len(message)):
 				if message[a] in charset:
 					ret += charset[(charset.index(message[a]) - charset.index(key[a % len(key)])) % len(charset)]
 				else:
@@ -278,7 +278,7 @@ def main():
 			powr += 1
 		lst = ()
 		a = [0]*powr
-		for x in xrange(len(charset)**powr):
+		for x in range(len(charset)**powr):
 			if a[-1] >= len(charset):
 				a[-1] %= len(charset)
 				a[-2] += 1
@@ -289,11 +289,11 @@ def main():
 			a[-1] += 1
 		ret = ""
 		if isinstance(cryptcharset, (list, tuple)):
-			for bytes in xrange(0, len(message), 2):
+			for bytes in range(0, len(message), 2):
 				bytes = message[bytes:bytes+2]
 				ret += cryptcharset[lst.index(bytes)]
 		else:
-			for bytes in xrange(0, len(message), 2):
+			for bytes in range(0, len(message), 2):
 				bytes = message[bytes:bytes+2]
 				ret += chr(lst.index(bytes))
 		return ret
@@ -303,7 +303,7 @@ def main():
 			try:
 				if not op:
 					err("Encrypt/Decrypt/Quit? (E/D/Q) ")
-					op = raw_input()
+					op = input()
 				ed = op[0].lower()
 			except IndexError:
 				err("Error: Could not determine what operation to perform!")
@@ -328,7 +328,7 @@ def main():
 						raise ValueError("Unknown input type '%s'" %(typ))
 				else:
 					err("Message: ")
-					msg = raw_input()
+					msg = input()
 				if kin:
 					kin = tuple(eval(kin))
 					typ = kin[0]
@@ -344,7 +344,7 @@ def main():
 						raise ValueError("Unknown input type '%s'" %(typ))
 				else:
 					err("Key: ")
-					key = raw_input()
+					key = input()
 				key = process(key, lambda: False)
 				if fake:
 					key = decode(key)
@@ -355,14 +355,14 @@ def main():
 				elif ed == "d":
 					try:
 						write("%s" %(decrypt(process(msg), key, cryptcharset)))
-					except ValueError, e:
+					except ValueError as e:
 						if (str(e).endswith("' is not in list") and str(e).startswith("'")) or str(e) == "tuple.index(x): x not in tuple" or str(e) == "chr() arg not in range(256)":
 							raise ValueError("The message given is either not properly encoded or not encoded at all.")
 						else:
 							raise e
-					except IndexError, e:
+					except IndexError as e:
 						raise ValueError("The message given is either not properly encoded or not encoded at all.")
-			except Exception, e:
+			except Exception as e:
 				err(str(e)+"\n")
 		except:
 			return "q"
@@ -400,19 +400,19 @@ def main():
 			err("All informaton encrypted will be human-decryptable until program exit and all information decrypted will be assumed to have been encrypted by a human or this program in --human mode.")
 			del sys.argv[sys.argv.index(arg)]
 		elif "--icharset" == arg: # Allows changing of the input charset upon runtime; it's best to only use this with --human mode
-			cryptcharset = eval(raw_input("Input charset: "))
+			cryptcharset = eval(input("Input charset: "))
 			defaultkey = cryptcharset[0]
 			del sys.argv[sys.argv.index(arg)]
 		elif "--ocharset" == arg: # Allows changing of the output charset, for example, if you're storing the message in a database where only alphanumerics are supported
-			outcharset = evaal(raw_input("Output charset: "))
+			outcharset = evaal(input("Output charset: "))
 			del sys.argv[sys.argv.index(arg)]
 		elif "--charset" == arg: # Changes both the input and output charsets at once; Again, it's best to only use this with --human mode
-			cryptcharset = eval(raw_input("Charset: "))
+			cryptcharset = eval(input("Charset: "))
 			outcharset = cryptcharset
 			defaultkey = cryptcharset[0]
 			del sys.argv[sys.argv.index(arg)]
 		elif "--maxval" == arg: # Use of this is discouraged, and I can't remember what it's even good for
-			maxval = eval(raw_input("Maximum acceptable value: "))
+			maxval = eval(input("Maximum acceptable value: "))
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:2] == "-o": # Allows specifying the operation (encrypt/decrypt/quit uselessly) as a parameter
 			op = arg[2:]
@@ -457,7 +457,7 @@ def main():
 					write(encode(random.getrandbits(params["bits"])))
 				elif "bytes" in params:
 					hsh = ""
-					for i in xrange(params["bytes"]):
+					for i in range(params["bytes"]):
 						hsh += chr(random.randint(0, 255))
 					write(encode(hsh))
 				else:
@@ -494,7 +494,7 @@ def main():
 			hash_algo = arg[7:]
 			try:
 				hash_algo = int(hash_algo, 0)
-			except Exception, e:
+			except Exception as e:
 				hash_algo = True
 			if hash_algo <= 0:
 				hash_algo = True
@@ -511,7 +511,7 @@ def main():
 				err("Invalid parameter: -l takes an int")
 				raise SystemExit
 			r = int(sys.argv[2], 0)
-			for b in xrange(r):
+			for b in range(r):
 				if UI() == "q":
 					return
 			return
@@ -531,7 +531,7 @@ def main():
 					raise ValueError("Unknown input type '%s'" %(typ))
 			else:
 				err("Message: ")
-				msg = raw_input()
+				msg = input()
 			write(encode(msg, outcharset))
 			return
 		elif sys.argv[1] == "-d":
@@ -549,12 +549,12 @@ def main():
 					raise ValueError("Unknown input type '%s'" %(typ))
 			else:
 				err("Message: ")
-				msg = raw_input()
+				msg = input()
 			write(decode(msg, outcharset))
 			return
 	err("Invalid argument(s)! Usage: %s [-l count] [-q] | %s [-e/-d] [-q] | %s [--code] | See the code for more info" %(sys.argv[0], sys.argv[0], sys.argv[0]))
 try:
 	main()
-except KeyboardInterrupt, SystemExit:
+except KeyboardInterrupt as SystemExit:
 	pass
 del main
