@@ -440,6 +440,7 @@ def main():
 				chunk = True
 			if chunk <= 0:
 				chunk = True
+			print chunk
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:9] == "--genkey=": # Generates a random key to use while encrypting
 			err("Generating a random key...\n")
