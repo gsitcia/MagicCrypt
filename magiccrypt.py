@@ -357,6 +357,7 @@ def main():
 						chunk = len(msg)
 					for x in xrange(0, len(msg), chunk):
 						out += "%s," %(encrypt(process(msg[x:x+chunk]), key, cryptcharset))
+					out = out[:-1]
 				elif ed == "d":
 					msg = msg.split(",")
 					try:
