@@ -134,6 +134,7 @@ def main():
 			i /= 256
 		return ret[::-1]
 	global fin, kin, op, fake, quiet, gkey, kkey, hash_algo, your_key_here, defaultkey, chunk # Ensures these variables get defined at a program-wide level
+	chunk = -1
 	gkey = lambda: stoi("3.14159265359") # Some arbitrary string; This needs to be the same for both encryptor and decryptor
 	kkey = lambda: stoi(str(gkey()))
 	fin = None # Input message, format '(type, value)'; possible types are "file" and "raw" and both type and value must be quoted, this is changed using the --in= parameter
@@ -352,6 +353,8 @@ def main():
 					key = defaultkey
 				if ed == "e":
 					msgl = []
+					if chunk < 1:
+						chunk = len(msg)
 					for x in xrange(0, len(msg), chunk):
 						write("%s" %(encrypt(process(msgl[x:x+chunk]), key, cryptcharset)))
 				elif ed == "d":
