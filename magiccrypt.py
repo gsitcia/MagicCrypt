@@ -133,7 +133,7 @@ def main():
 			ret += chr(i % 256)
 			i /= 256
 		return ret[::-1]
-	global fin, kin, op, fake, quiet, gkey, kkey, hash_algo, your_key_here, defaultkey # Ensures these variables get defined at a program-wide level
+	global fin, kin, op, fake, quiet, gkey, kkey, hash_algo, your_key_here, defaultkey, chunk # Ensures these variables get defined at a program-wide level
 	gkey = lambda: stoi("3.14159265359") # Some arbitrary string; This needs to be the same for both encryptor and decryptor
 	kkey = lambda: stoi(str(gkey()))
 	fin = None # Input message, format '(type, value)'; possible types are "file" and "raw" and both type and value must be quoted, this is changed using the --in= parameter
@@ -351,10 +351,14 @@ def main():
 				if key == "":
 					key = defaultkey
 				if ed == "e":
-					write("%s" %(encrypt(process(msg), key, cryptcharset)))
+					msgl = []
+					for x in xrange(0, len(msg), chunk):
+						write("%s" %(encrypt(process(msgl[x:x+chunk]), key, cryptcharset)))
 				elif ed == "d":
+					msg = msg.split(",")
 					try:
-						write("%s" %(decrypt(process(msg), key, cryptcharset)))
+						for m in msg:
+							write("%s" %(decrypt(process(m), key, cryptcharset)))
 					except ValueError, e:
 						if (str(e).endswith("' is not in list") and str(e).startswith("'")) or str(e) == "tuple.index(x): x not in tuple" or str(e) == "chr() arg not in range(256)":
 							raise ValueError("The message given is either not properly encoded or not encoded at all.")
@@ -422,6 +426,15 @@ def main():
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:5] == "--in=": # Allows specifying the input message or file as a parameter
 			fin = arg[5:]
+			del sys.argv[sys.argv.index(arg)]
+		elif arg[:8] == "--chunk=":
+			chunk = arg[7:]
+			try:
+				chunk = int(chunk, 0)
+			except Exception, e:
+				chunk = True
+			if chunk <= 0:
+				chunk = True
 			del sys.argv[sys.argv.index(arg)]
 		elif arg[:9] == "--genkey=": # Generates a random key to use while encrypting
 			err("Generating a random key...\n")
