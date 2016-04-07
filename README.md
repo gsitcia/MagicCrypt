@@ -1,6 +1,4 @@
 # MagicCrypt
-An encryption algorithm based on magic numbers designed to be truly unbreakable, under any amount of processing capabilities.
-
 ### LICENSE:
 
 As used in this README/LICENSE, the term "version" means anything based on, inspired by, or otherwise connected to this software, including but not limited to:
@@ -25,8 +23,4 @@ https://raw.githubusercontent.com/crash0verrid3/MagicCrypt/license/README.md and
 
 All disputes are settled by Alex.
 
-^^^^^^^^ Anything above this line, including this line, must be copied exactly from the original version of this file ^^^^^^^^
-
-### HELPFUL INFO:
-
-*The HELPFUL INFO section of this file has not been added yet.*
+This license must be referenced by URL in anything bound by it. This license extends to everything bound by it.
