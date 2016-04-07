@@ -299,7 +299,7 @@ def main():
 				ret += chr(lst.index(bytes))
 		return ret
 	def UI(): # Basic console user-interface
-		global fin, kin, op, fake # `fin` is the input message, `kin` is the key, `op` is the operation to perform, and fake allows keys to made to appear incorrect to anyone trying to brute-force the message. See the comments at the top of this program for more details.
+		global fin, kin, op, fake, chunk # `fin` is the input message, `kin` is the key, `op` is the operation to perform, and fake allows keys to made to appear incorrect to anyone trying to brute-force the message. See the comments at the top of this program for more details.
 		try:
 			try:
 				if not op:
