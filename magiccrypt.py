@@ -436,9 +436,11 @@ def main():
 			chunk = arg[7:]
 			try:
 				chunk = int(chunk, 0)
+				print chunk
 			except Exception, e:
+				print e, arg[7:]
 				chunk = True
-			if chunk <= 0:
+			if chunk < 1:
 				chunk = True
 			print chunk
 			del sys.argv[sys.argv.index(arg)]
