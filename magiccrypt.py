@@ -361,7 +361,7 @@ def main():
 					msg = msg.split(",")
 					try:
 						for m in msg:
-							out += decrypt(process(m), key, cryptcharset))
+							out += decrypt(process(m), key, cryptcharset)
 					except ValueError, e:
 						if (str(e).endswith("' is not in list") and str(e).startswith("'")) or str(e) == "tuple.index(x): x not in tuple" or str(e) == "chr() arg not in range(256)":
 							raise ValueError("The message given is either not properly encoded or not encoded at all.")
