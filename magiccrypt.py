@@ -352,11 +352,10 @@ def main():
 				if key == "":
 					key = defaultkey
 				if ed == "e":
-					msgl = []
 					if chunk < 1:
 						chunk = len(msg)
 					for x in xrange(0, len(msg), chunk):
-						write("%s" %(encrypt(process(msgl[x:x+chunk]), key, cryptcharset)))
+						write("%s" %(encrypt(process(msg[x:x+chunk]), key, cryptcharset)))
 				elif ed == "d":
 					msg = msg.split(",")
 					try:
