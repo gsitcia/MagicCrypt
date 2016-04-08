@@ -8,3 +8,7 @@ The license can be found at https://raw.githubusercontent.com/crash0verrid3/Magi
 ### HELPFUL INFO:
 
 *The HELPFUL INFO section of this file has not been added yet.*
+
+### To-do:
+
+Add `crypto_random.h`
